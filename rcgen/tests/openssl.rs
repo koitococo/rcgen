@@ -323,7 +323,7 @@ fn test_openssl_separate_ca() {
 		.distinguished_name
 		.push(DnType::CommonName, "Dev domain");
 	let cert_key = KeyPair::generate().unwrap();
-	let cert = params.signed_by(&cert_key, &ca_cert, &ca_key).unwrap();
+	let cert = params.signed_by(&cert_key, &ca_cert.params(), &ca_key).unwrap();
 	let key = cert_key.serialize_der();
 
 	verify_cert_ca(&cert.pem(), &key, &ca_cert_pem);
@@ -347,7 +347,7 @@ fn test_openssl_separate_ca_with_printable_string() {
 		.distinguished_name
 		.push(DnType::CommonName, "Dev domain");
 	let cert_key = KeyPair::generate().unwrap();
-	let cert = params.signed_by(&cert_key, &ca_cert, &ca_key).unwrap();
+	let cert = params.signed_by(&cert_key, &ca_cert.params(), &ca_key).unwrap();
 	let key = cert_key.serialize_der();
 
 	verify_cert_ca(&cert.pem(), &key, &ca_cert.pem());
@@ -368,7 +368,7 @@ fn test_openssl_separate_ca_with_other_signing_alg() {
 		.distinguished_name
 		.push(DnType::CommonName, "Dev domain");
 	let cert_key = KeyPair::generate_for(&rcgen::PKCS_ECDSA_P384_SHA384).unwrap();
-	let cert = params.signed_by(&cert_key, &ca_cert, &ca_key).unwrap();
+	let cert = params.signed_by(&cert_key, &ca_cert.params(), &ca_key).unwrap();
 	let key = cert_key.serialize_der();
 
 	verify_cert_ca(&cert.pem(), &key, &ca_cert.pem());
@@ -398,7 +398,7 @@ fn test_openssl_separate_ca_name_constraints() {
 		.distinguished_name
 		.push(DnType::CommonName, "Dev domain");
 	let cert_key = KeyPair::generate().unwrap();
-	let cert = params.signed_by(&cert_key, &ca_cert, &ca_key).unwrap();
+	let cert = params.signed_by(&cert_key, &ca_cert.params(), &ca_key).unwrap();
 	let key = cert_key.serialize_der();
 
 	verify_cert_ca(&cert.pem(), &key, &ca_cert.pem());

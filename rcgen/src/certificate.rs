@@ -150,13 +150,13 @@ impl CertificateParams {
 	pub fn signed_by(
 		self,
 		public_key: &impl PublicKeyData,
-		issuer: &Certificate,
+		issuer: &CertificateParams,
 		issuer_key: &KeyPair,
 	) -> Result<Certificate, Error> {
 		let issuer = Issuer {
-			distinguished_name: &issuer.params.distinguished_name,
-			key_identifier_method: &issuer.params.key_identifier_method,
-			key_usages: &issuer.params.key_usages,
+			distinguished_name: &issuer.distinguished_name,
+			key_identifier_method: &issuer.key_identifier_method,
+			key_usages: &issuer.key_usages,
 			key_pair: issuer_key,
 		};
 

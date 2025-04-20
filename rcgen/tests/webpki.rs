@@ -274,7 +274,7 @@ fn test_webpki_separate_ca() {
 		.push(DnType::CommonName, "Dev domain");
 
 	let key_pair = KeyPair::generate().unwrap();
-	let cert = params.signed_by(&key_pair, &ca_cert, &ca_key).unwrap();
+	let cert = params.signed_by(&key_pair, &ca_cert.params(), &ca_key).unwrap();
 	let sign_fn = |cert, msg| sign_msg_ecdsa(cert, msg, &signature::ECDSA_P256_SHA256_ASN1_SIGNING);
 	check_cert_ca(
 		cert.der(),
@@ -302,7 +302,7 @@ fn test_webpki_separate_ca_with_other_signing_alg() {
 		.push(DnType::CommonName, "Dev domain");
 
 	let key_pair = KeyPair::generate_for(&rcgen::PKCS_ED25519).unwrap();
-	let cert = params.signed_by(&key_pair, &ca_cert, &ca_key).unwrap();
+	let cert = params.signed_by(&key_pair, &ca_cert.params(), &ca_key).unwrap();
 	check_cert_ca(
 		cert.der(),
 		&key_pair,
@@ -629,7 +629,7 @@ fn test_webpki_crl_revoke() {
 	ee.extended_key_usages = vec![ExtendedKeyUsagePurpose::ClientAuth];
 	ee.serial_number = Some(SerialNumber::from(99999));
 	let ee_key = KeyPair::generate_for(alg).unwrap();
-	let ee = ee.signed_by(&ee_key, &issuer, &issuer_key).unwrap();
+	let ee = ee.signed_by(&ee_key, &issuer.params(), &issuer_key).unwrap();
 
 	// Set up webpki's verification requirements.
 	let trust_anchor = anchor_from_trusted_cert(issuer.der()).unwrap();

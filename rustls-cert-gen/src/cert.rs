@@ -205,7 +205,7 @@ impl EndEntityBuilder {
 		let key_pair = self.alg.to_key_pair()?;
 		let cert = self
 			.params
-			.signed_by(&key_pair, &issuer.cert, &issuer.key_pair)?;
+			.signed_by(&key_pair, issuer.cert.params(), &issuer.key_pair)?;
 		Ok(EndEntity { cert, key_pair })
 	}
 }
